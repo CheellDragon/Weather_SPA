@@ -1,28 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getLatLon } from './actions';
 import { getWeather } from './actions';
 
 const initialState = {
     weather: null,
     loading: false,
-    error: null,
 };
 
 const slice = createSlice({
-    name: 'sclice',
+    name: 'slice',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getWeather.pending, (state) => {
+        builder.addCase(getLatLon.pending, (state) => {
             state.loading = true;
-            state.error = null;
+        });
+        builder.addCase(getLatLon.rejected, (state) => {
+            state.loading = false;
         });
         builder.addCase(getWeather.fulfilled, (state, action) => {
             state.loading = false;
             state.weather = action.payload;
         });
-        builder.addCase(getWeather.rejected, (state, action) => {
+        builder.addCase(getWeather.rejected, (state) => {
             state.loading = false;
-            state.error = action.payload;
         });
     },
 });

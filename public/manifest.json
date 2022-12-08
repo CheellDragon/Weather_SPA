@@ -1,4 +1,6 @@
 {
+  "manifest_version": 3,
+  "version": "1",
   "short_name": "React App",
   "name": "Create React App Sample",
   "start_url": ".",
