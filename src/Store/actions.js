@@ -7,6 +7,26 @@ export const getLatLon = createAsyncThunk('latLon', async (city) => {
 });
 
 export const getWeather = createAsyncThunk('weather', async (latLon) => {
-    const response = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${latLon.lat}&longitude=${latLon.lon}&daily=temperature_2m_max,temperature_2m_min,rain_sum&timezone=GMT`);
-    return response.data;
+    const response = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${latLon.lat}&longitude=${latLon.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,windgusts_10m_max,winddirection_10m_dominant&timezone=GMT`);
+    const daily = response.data.daily
+    const weather = daily.precipitation_sum.map((precipitation_sum,i) => {
+        return {
+            temperature_max: daily.temperature_2m_max[i],
+            temperature_min: daily.temperature_2m_min[i],
+            precipitation_sum,
+            time: daily.time[i],
+            windspeed: daily.windspeed_10m_max[i],
+            windgusts: daily.windgusts_10m_max[i],
+            winddirection: daily.winddirection_10m_dominant[i],
+        }
+    })
+    return weather;
+})
+
+export const getCountries = createAsyncThunk('findCountries', async () => {
+    const response = await axios.get(`https://restcountries.com/v3.1/all`);
+    const names = response.data.map((country) => {
+        return country.name.common;
+    })
+    return names;
 })

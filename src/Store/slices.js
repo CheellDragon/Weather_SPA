@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getLatLon } from './actions';
-import { getWeather } from './actions';
+import { getLatLon, getCountries, getWeather } from './actions';
 
 const initialState = {
     weather: null,
     loading: false,
+    countries: [],
 };
 
 const slice = createSlice({
@@ -21,6 +21,9 @@ const slice = createSlice({
         builder.addCase(getWeather.fulfilled, (state, action) => {
             state.loading = false;
             state.weather = action.payload;
+        });
+        builder.addCase(getCountries.fulfilled, (state, action) => {
+            state.countries = action.payload;
         });
         builder.addCase(getWeather.rejected, (state) => {
             state.loading = false;
