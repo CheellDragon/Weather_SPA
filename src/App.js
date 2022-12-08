@@ -6,20 +6,10 @@ import { getLatLon, getWeather } from './Store/actions';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Button } from '@mui/material';
-import { experimentalStyled as styled } from '@mui/material/styles';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
 const App = () => {
   const [inputValue,setInputValue] = useState("London")
@@ -55,21 +45,18 @@ const App = () => {
   }, []);
 
   return (
-    store.weather
+    <div className='app'>
+    { store.weather
     ? <Box
       component="form"
-      sx={{
-        '& > :not(style)': { width: '100%', marginBottom: "15px" },
-      }}
-      noValidate
-      autoComplete="off"
+      sx={{ width: '90%', marginBottom: "15px", padding: 5, textAlign: "center" }}
     >
       <Typography variant="h2" gutterBottom>
         Weather Forecast
       </Typography>
-      <TextField id="outlined-basic" label="City" variant="outlined" onChange={changeCity} />
-      <Button onClick={getWeatherForecast} variant="outlined">Forecast Update</Button>
-      <Typography variant="h4" gutterBottom>
+      <TextField sx={{ width: "60%", marginRight: "10px" }} id="outlined-basic" label="City" variant="outlined" onChange={changeCity} />
+      <Button sx={{ height: "55px", backgroundColor: "rgb(190,230,115)" }} onClick={getWeatherForecast} variant="outlined">Forecast Update</Button>
+      <Typography sx={{ marginTop: "20px" }} variant="h4" gutterBottom>
         {store.weather.city.name} {
             store.weather.city.state
             ? <> - {store.weather.city.state}</>
@@ -77,11 +64,11 @@ const App = () => {
           } - {store.weather.city.country}
       </Typography>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={{ xs: 0, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+        <Grid container sx={{ padding: 5 }} spacing={{ xs: 0, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
           {store.weather.weather.map((day, index) => (
             <Grid item xs={2} sm={4} md={4} key={index}>
 
-              <Card sx={{ minWidth: 275 }}>
+              <Card sx={{ minWidth: 275, backgroundColor: `rgb(${143 - 5 * index},${181 - 5 * index},${59 - 5 * index})` }}>
                 <CardContent>
                   <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     
@@ -110,7 +97,8 @@ const App = () => {
         </Grid>
       </Box>
     </Box>
-    : <></>
+    : <></> }
+    </div>
   );
 }
 
